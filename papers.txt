@@ -1,0 +1,6 @@
+- https://www.hindawi.com/journals/cmmm/2013/345968/ - ASM
+- Rosa-María - CNN
+- https://ieeexplore.ieee.org/document/6217824 - Snake
+- https://ieeexplore.ieee.org/abstract/document/7532385 - simple Shape Model
+ - https://ieeexplore.ieee.org/document/1295077 - different approach to 3D-reconstruction gives cool insides to how to do it
+- https://www.researchgate.net/publication/263477201_3D_reconstruction_of_a_carotid_bifurcation_from_2D_transversal_ultrasound_images - 3D reconstr. using eclipse fitting and other image segmentation seems very interesting

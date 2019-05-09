@@ -1,0 +1,6 @@
+Active Shape Model - Should go pretty fast to implement, might need already segmentaded images but will need this for most
+Snake segmentation - Similar to ASM but somewhat more flexible
+Deep learning - Less experience with but could work
+KNN - Easy to implement, but won't be enough
+Bayesian - easy to implement, requires more test data tho
+Histogram equalizer - same as KNN, might be able to combine with other methods
