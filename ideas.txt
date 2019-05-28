@@ -7,5 +7,7 @@ Bayesian - easy to implement, requires more test data tho
 Histogram equalizer - same as KNN, might be able to combine with other methods
 
 Going for:
-Disjunctive Normal Shape with Deep learning
-Hybrid Active Contour Model with some machine learning
+Disjunctive Normal Shape with Deep learning - Nope
+Hybrid Active Contour Model with some machine learning - Nope
+since no really shapes except circles
+Using U-net for looking for circles in the pictures instead 
