@@ -4,8 +4,12 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cv2
 import csv
+from srad import srad
 
-imNrs = [str(i) for i in range(109, 168)]
+tobias = (109, 168)
+magnus = (42, 69)
+
+imNrs = [str(i) for i in range(42, 69)]
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
@@ -17,14 +21,21 @@ sav_or_show = "show"
 feat_dic = {}
 
 for i in range(int(imNrs[-1])-int(imNrs[0])):
-    image = cv2.imread('/home/friberg/Programming/ThesisOskarFriberg/dataset/tobiasExt/og/im' + imNrs[i] + 'Original Image.png', 0)
+    image = cv2.imread('/home/friberg/Programming/ThesisOskarFriberg/dataset/magnusExt/og/im' + imNrs[i] + 'Original Image.png', 0)
 
     if('h' in sav_or_show):
-        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8,8))
-        cl1 = clahe.apply(image)
-        res = np.hstack((image, cl1))
+        # clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(8,8))
+        # clahe2 = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4,4))
+        # cl1 = clahe.apply(image)
+        # cl2 = clahe.apply(image)
+        rows, cols = image.shape
+        scal_img = np.exp(image/255)
+        srad_img = srad(scal_img, rows, cols, 20, 0.1)
+
+        # plt.subplot(2,1,1),plt.imshow(cl1 ,'gray')
+        # plt.subplot(2,1,2),plt.imshow(cl2 ,'gray')
         plt.subplot(2,1,1),plt.imshow(image ,'gray')
-        plt.subplot(2,1,2),plt.imshow(cl1 ,'gray')
+        plt.subplot(2,1,2),plt.imshow(srad_img ,'gray')
         plt.show()
         wait = input("Press enter to continue")
     #else:
