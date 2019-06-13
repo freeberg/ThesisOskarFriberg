@@ -6,38 +6,45 @@ import cv2
 import csv
 from srad import srad
 
-tobias = (109, 168)
-magnus = (42, 69)
-
-imNrs = [str(i) for i in range(42, 69)]
+tobias = (109, 168, "Tobias", (136,488), (186,660))
+magnus = (57, 69, "Magnus", (100,500), (200, 600))
+patient = magnus
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
-def speckle_reduce(img):
-    return img
+
+def load_dicom_image(patient, imNbr):
+    '''in:patient triple, in:imNbr int'''
+    im_path = '/home/friberg/Programming/ThesisOskarFriberg/dataset/'+patient[2]+'/IM_00'+str(imNbr)
+    ds = dicom.dcmread(im_path)
+    rows = ds.Rows
+    cols = ds.Columns
+    im1 = np.zeros((rows, cols), np.float32)
+    im1[:][:] = rgb2gray(ds.pixel_array[0][:][:])
+    f_height = np.array(range(patient[3][0], patient[3][1]))
+    f_width = np.array(range(patient[4][0], patient[4][1]))
+    focused_img = np.array(im1[:][f_height[:, None],f_width], dtype=np.uint8)
+    return focused_img, len(f_height), len(f_width)
+
 
 sav_or_show = "show"
 feat_dic = {}
 
-for i in range(int(imNrs[-1])-int(imNrs[0])):
-    image = cv2.imread('/home/friberg/Programming/ThesisOskarFriberg/dataset/magnusExt/og/im' + imNrs[i] + 'Original Image.png', 0)
-
+for i in range(patient[1]-patient[0]):
+    image, rows, cols = load_dicom_image(patient, i + patient[0])
     if('h' in sav_or_show):
-        # clahe = cv2.createCLAHE(clipLimit=4.0, tileGridSize=(8,8))
-        # clahe2 = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4,4))
-        # cl1 = clahe.apply(image)
-        # cl2 = clahe.apply(image)
-        rows, cols = image.shape
+        # clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(8,8))
+        clahe2 = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4,4))
+        # cl1 = cv2.equalizeHist(image)
+        cl2 = clahe2.apply(image)
         scal_img = np.exp(image/255)
-        srad_img = srad(scal_img, rows, cols, 20, 0.1)
-
-        # plt.subplot(2,1,1),plt.imshow(cl1 ,'gray')
-        # plt.subplot(2,1,2),plt.imshow(cl2 ,'gray')
-        plt.subplot(2,1,1),plt.imshow(image ,'gray')
-        plt.subplot(2,1,2),plt.imshow(srad_img ,'gray')
-        plt.show()
-        wait = input("Press enter to continue")
+        scal_img2 = np.exp(cl2/255)
+        srad_img = srad(scal_img, rows, cols, 120, 0.05)
+        srad_img2 = srad(scal_img2, rows, cols, 120, 0.05)
+        cv2.imwrite(patient[2] + str(i + patient[0]) + 'og2.png',255 * np.log(srad_img))
+        cv2.imwrite(patient[2] + str(i + patient[0]) + 'he2.png',255 * np.log(srad_img2))
+        # wait = input("Press enter to continue")
     #else:
         #feat_dic[imNrs[i]] = 
 
@@ -46,7 +53,7 @@ for i in range(int(imNrs[-1])-int(imNrs[0])):
     # f_width = np.array(range(imageCoor[2], imageCoor[3]))
     # corp_img = np.array(image[f_height[:, None],f_width], dtype=np.uint8)
 
-if('a' in sav_or_show):
-    w = csv.writer(open("seg_training_data.csv", "w"))
-    for key, val in feat_dic.items():
-        w.writerow([key, val])   
+# if('a' in sav_or_show):
+#     w = csv.writer(open("seg_training_data.csv", "w"))
+#     for key, val in feat_dic.items():
+#         w.writerow([key, val])   
