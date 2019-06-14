@@ -7,7 +7,9 @@ import cv2
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
+startImMag = 42
 startIm = 109
+imageCoorMag = [185, 425, 160, 675]
 imageCoor = [120, 510, 160, 675]
 
 for i in range(50):

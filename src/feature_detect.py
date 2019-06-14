@@ -6,8 +6,9 @@ import cv2
 import csv
 from srad import srad
 
-tobias = (109, 168, "Tobias", (136,488), (186,660))
-magnus = (57, 69, "Magnus", (100,500), (200, 600))
+magnus = (69, 70, "Magnus", (100,500), (200, 600))
+tobias = (109, 169, "Tobias", (136,488), (186,660))
+roger = (223, 283, "Roger", (100,500), (200, 600))
 patient = magnus
 
 def rgb2gray(rgb):
