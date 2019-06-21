@@ -17,10 +17,11 @@ patient = magnus
 def find_best_circle(patient, train_patient, img_nr="042", r=36.20639906361134, padding=10):
 
     class_data = train_ML(train_patient)
-    r = r + r/10
+    # r = r + r/padding
+    pad = r/padding
     img = cv2.imread(get_img_path(img_nr, patient[2]), cv2.IMREAD_GRAYSCALE)
     rows, cols = img.shape
-    circle_pos = [(x, y) for x in range(ceil(r),int(rows - r) - 1) for y in range(ceil(r),int(cols - r) - 1)]
+    circle_pos = [(x, y) for x in range(ceil(r + pad),int(rows - (r + pad)) - 2) for y in range(ceil(r + pad),int(cols - (r+pad)) - 2)]
     
     circle_scores = {}
     for (x, y) in circle_pos:
