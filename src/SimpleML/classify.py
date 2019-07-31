@@ -12,9 +12,10 @@ from extract_features import extract_HOG, ext_feats_from_data, get_img_path
 magnus = (42, 70, "Magnus", (100,500), (200, 600))
 tobias = (109, 169, "Tobias", (136,488), (186,660))
 roger = (223, 283, "Roger", (100,500), (200, 600))
-patient = magnus
+train_patient = magnus
+patient = tobias
 
-def find_best_circle(patient, train_patient, img_nr="042", r=36.20639906361134, padding=10):
+def find_best_circle(patient, train_patient, img_nr, r, padding=10):
 
     class_data = train_ML(train_patient)
     # r = r + r/padding
@@ -86,6 +87,6 @@ def bayes(train_class, circ_class):
 
 
 
-print(find_best_circle(patient, patient))
+print(find_best_circle(patient, train_patient, "223", 42.134823299018805))
 
 
