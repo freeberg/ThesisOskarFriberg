@@ -17,6 +17,8 @@ import ntpath
 
 def get_roi(img, roe):
     poi = np.where(img != 0)
+    if poi[0].size == 0:
+        return ((0,0),(0,0))
     min_x = poi[0][0]
     max_x = poi[0][-1]
     min_y = min(poi[1])
@@ -51,9 +53,12 @@ def guess_radius(img_path):
 
     # https://scikit-image.org/docs/dev/auto_examples/edges/plot_circular_elliptical_hough_transform.html
 def find_circle(img_path, viz=False):
+    print(img_path)
     # Load picture and detect edges
     img = cv2.imread(img_path,0)
     roi_x, roi_y = get_roi(img, 0.2)
+    if (roi_x[0] == 0) and (roi_x[1] == 0):
+        return 0, 0, 0
     image = img_as_ubyte(img[roi_x[0]:roi_x[1], roi_y[0]:roi_y[1]])
     edges = canny(image, sigma=3, low_threshold=10, high_threshold=50)
 
@@ -65,7 +70,8 @@ def find_circle(img_path, viz=False):
     # Select the most prominent circle
     accums, cx, cy, radii = hough_circle_peaks(hough_res, hough_radii,
                                                total_num_peaks=3)
-
+    if len(cx) == 0:
+        return 0, 0, 0
     # Draw them
     if viz:
         fig, ax = plt.subplots(ncols=1, nrows=1, figsize=(10, 4))
@@ -84,5 +90,5 @@ def find_circle(img_path, viz=False):
     x_pos = [i + roi_x[0] for i in cy]
     return x_pos[0], y_pos[0], radii[0]
 
-# find_circle("dataset/FP1_masks/FP1044_mask.png", True)
+find_circle("experiments_SRAD_Cir/model_sc1_lr0.05_batch2_ADAM/sc0.75_thresh0.2/FP195_seg.png", True)
     
