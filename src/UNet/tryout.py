@@ -1,6 +1,6 @@
 
 from train import train_net
-from unet import UNet
+from UNet import UNet
 import numpy as np
 import matplotlib.pyplot as plt
 import cv2

@@ -23,7 +23,6 @@ def split_ids(ids, n=2):
 def to_cropped_imgs(ids, dir, suffix, scale):
     """From a list of tuples, returns the correct cropped img"""
     for id, pos in ids:
-        # print("Processing: " + id)
         im = resize_and_crop(Image.open(dir + id + suffix), scale=scale)
         yield get_square(im, pos)
 

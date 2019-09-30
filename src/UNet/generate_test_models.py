@@ -3,12 +3,11 @@ from .unet import UNet
 from .train import train_net
 
 
-def gen_test_models():
-    lr_opts = [0.05, 0.1, 0.2]
-    batch_opts = [1, 2]#, 4]
-    scale_opts = [0.75, 1]
-    optimzer_opts = ["ADAM", "ADAGRAD", "SGD"]
-    gpu = True
+def gen_test_models(gpu):
+    lr_opts = [0.05]#, 0.1, 0.2]
+    batch_opts = [1]#, 2], 4]
+    scale_opts = [0.75]#, 1]
+    optimzer_opts = ["ADAM"]#, "ADAGRAD", "SGD"]
     
     for lr in lr_opts:
         for batch in batch_opts:
@@ -18,7 +17,7 @@ def gen_test_models():
                     if gpu:
                         net.cuda()
                     train_net(net=net,
-                      epochs=5,
+                      epochs=1,
                       batch_size=batch,
                       lr=lr,
                       gpu=gpu,

@@ -90,5 +90,5 @@ def find_circle(img_path, viz=False):
     x_pos = [i + roi_x[0] for i in cy]
     return x_pos[0], y_pos[0], radii[0]
 
-find_circle("experiments_SRAD_Cir/model_sc1_lr0.05_batch2_ADAM/sc0.75_thresh0.2/FP195_seg.png", True)
+# find_circle("experiments_SRAD_Cir/model_sc1_lr0.05_batch2_ADAM/sc0.75_thresh0.2/FP195_seg.png", True)
     

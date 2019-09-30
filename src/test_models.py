@@ -29,14 +29,17 @@ def fancify_result(result_dir):
 
     return "Total: " + total + "    Magnus: " + magnus + "    Roger: " + roger + "    FP1: " + FP1 + "    FP: " + FP2
 
+gpu = False
+if not gpu:
+    print("Not using GPU, will take long time!")
+
 print("Generate models !! Will take some time")
-gen_test_models()
+gen_test_models(gpu)
 
 viz = True
-scale = [0.75, 1]
+scale = [0.75]##, 1]
 out_thresh = [0.2]
 crf = True
-gpu = True
 
 model_dir = "checkpoints/"
 models = [f + "/" for f in os.listdir(model_dir)]
