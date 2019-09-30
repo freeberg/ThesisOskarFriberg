@@ -6,11 +6,11 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 
-from dice_loss import dice_coeff
+from UNet.dice_loss import dice_coeff
 from find_circle import find_circle
 
 man_seg_dict = {}
-with open("src/manuellSeg.csv", newline='') as csvfile:
+with open("src/csvfiles/manuellSeg.csv", newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=';')
     for row in reader:
         man_seg_dict[row[0]] = [float(row[1]), float(row[2]), float(row[3])]

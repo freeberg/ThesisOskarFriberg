@@ -14,7 +14,7 @@ FP1 = (18, 99, "FP1",(100,500), (200, 600))
 FP2 = (105, 187, "FP2",(100,500), (200, 600))
 patient = FP1
 seg_dict = []
-with open("src/manuellSegResultat"+ patient[2] + ".csv", newline='') as csvfile:
+with open("src/csvfiles/manuellSegResultat"+ patient[2] + ".csv", newline='') as csvfile:
     reader = csv.reader(csvfile, delimiter=';')
     for row in reader:
         seg_dict.append((row[0], float(row[1]), float(row[2]), float(row[3])))
@@ -46,14 +46,10 @@ for i in range(int(imNrs[-1])-int(imNrs[0])+ 1):
     dia_pix_w = pixelmmWidth * 1/2000.*diams[i]
     dia_pix_h = pixelmmHeight * 1/2000.*diams[i]
     crop_x, crop_y = (yCoor[i] - patient[3][0], xCoor[i] - patient[4][0])
-    # print(dia_pix_h)
-    # print(dia_pix_w)
     seg_circle = plt.Circle((crop_y, crop_x), dia_pix_h, color='w')
     seg_circle.set_fill(True)
     f_height = np.array(range(patient[4][0], patient[4][1]))
     f_width = np.array(range(patient[3][0], patient[3][1]))
-    # print(f_height)
-    # print(f_width)
     if('h' in savOrShow):
         corp_img = np.array(image[f_width[:, None],f_height], dtype=np.uint8)
         
@@ -73,10 +69,8 @@ for i in range(int(imNrs[-1])-int(imNrs[0])+ 1):
         seg_traing_set[imNrs[i]] = (crop_x, crop_y, dia_pix_w)
 
 
-
-
 if('a' in savOrShow):
-    str_add = "seg_training_data_"
+    str_add = "csvfiles/seg_training_data_"
     w = csv.writer(open(str_add+patient[2]+".csv", "w", newline=''), delimiter=';', quoting=csv.QUOTE_MINIMAL)
     for key, val in seg_traing_set.items():
         w.writerow([key, val])   

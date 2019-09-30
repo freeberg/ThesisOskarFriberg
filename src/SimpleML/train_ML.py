@@ -12,7 +12,7 @@ import operator
 
 
 def train_ML(patient):
-    train_data = "seg_training_data_%s.csv" % patient[2]
+    train_data = "csvfiles/seg_training_data_%s.csv" % patient[2]
     train_set = []
     with open(train_data, newline='') as csvfile:
         reader = csv.reader(csvfile, delimiter=';')
