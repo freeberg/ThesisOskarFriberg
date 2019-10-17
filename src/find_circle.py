@@ -38,10 +38,10 @@ def guess_radius(img_path):
     patient = get_patient(fn)
 
     if "Magnus" in patient or "FP1" in patient:
-        dicom_path = "dataset/" + patient + "/IM_00" + fn[len(patient):(len(patient)+2)]
+        dicom_path = "dataset/DICOM/" + patient + "/IM_00" + fn[len(patient):(len(patient)+2)]
         ds = dicom.dcmread(dicom_path)
     else:
-        dicom_path = "dataset/" + patient + "/IM_0" + fn[len(patient):(len(patient)+3)]
+        dicom_path = "dataset/DICOM/" + patient + "/IM_0" + fn[len(patient):(len(patient)+3)]
         ds = dicom.dcmread(dicom_path)
     
     pixelmm = 0.1 / ds.SequenceOfUltrasoundRegions[0].PhysicalDeltaX

@@ -29,12 +29,12 @@ def fancify_result(result_dir):
 
     return "Total: " + total + "    Magnus: " + magnus + "    Roger: " + roger + "    FP1: " + FP1 + "    FP: " + FP2
 
-gpu = False
+gpu = True
 if not gpu:
     print("Not using GPU, will take long time!")
 
-print("Generate models !! Will take some time")
-gen_test_models(gpu)
+#print("Generate models !! Will take some time")
+#gen_test_models(gpu)
 
 viz = True
 scale = [0.75]##, 1]
@@ -43,7 +43,7 @@ crf = True
 
 model_dir = "checkpoints/"
 models = [f + "/" for f in os.listdir(model_dir)]
-test_dir = "data/test/"
+test_dir = "dataset/test/"
 
 for sc in scale:
     for thr in out_thresh:
@@ -54,16 +54,12 @@ for sc in scale:
             out_dir = "experiments/"
             curr_dir = out_dir + m
             cp = latest_cp(model_dir + m)
-            try:
-                os.mkdir(curr_dir)
-            except OSError:
-                print("checkpoint folder exists")
+
 
             curr_dir = curr_dir + "sc" + str(sc) + "_thresh" + str(thr) + "/"
-            try:
-                os.mkdir(curr_dir)
-            except OSError:
-                print("checkpoint folder exists")
+            if not os.path.exists(curr_dir):
+                os.makedirs(curr_dir)
+
             net = UNet(n_channels=3, n_classes=1)
 
             if gpu:
@@ -82,6 +78,7 @@ for sc in scale:
                 full_img = Image.open(test_dir + i + ".png")
                 mask = predict_img(net, full_img, sc, thr, crf, gpu)
                 if viz:
+
                     fig = plt.figure()
                     a = fig.add_subplot(1, 2, 1)
                     a.set_title('Input image')

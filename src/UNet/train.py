@@ -26,7 +26,8 @@ def train_net(net,
     dir_img = 'dataset/train/'
     dir_mask = 'dataset/train_masks/'
     dir_checkpoint = 'checkpoints/model_sc' + str(img_scale) + "_lr" + str(lr) + "_batch" + str(batch_size) + "/"
-
+    if not os.path.exists(dir_checkpoint):
+        os.makedirs(dir_checkpoint)
 
     ids = get_ids(dir_img)
     ids = split_ids(ids)
@@ -72,6 +73,7 @@ def train_net(net,
         val = get_imgs_and_masks(iddataset['val'], dir_img, dir_mask, img_scale)
 
         epoch_loss = 0
+        prev_loss = 1
 
         for i, b in enumerate(batch(train, batch_size)):
             imgs = np.array([i[0] for i in b]).astype(np.float32)
@@ -90,21 +92,17 @@ def train_net(net,
             masks_probs_flat = masks_pred.view(-1)
             true_masks_flat = true_masks.view(-1)
 
-            # tens = masks_pred.detach()
-            # plt.imshow(true_masks[0])
-            # plt.show()
-            # plt.imshow(tens[0][0])
-            # plt.imshow(imgs[0].permute(1,2,0))
-            # plt.show()
-
             loss = criterion(masks_probs_flat, true_masks_flat)
             epoch_loss += loss.item()
 
             print('{0:.4f} --- loss: {1:.6f}'.format(i * batch_size / N_train, loss.item()))
-
+            print('prev loss' + prev_loss)
+            prev_loss = epoch_loss
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
+
+        prev_loss = 1
 
         print('Epoch finished ! Loss: {}'.format(epoch_loss / i))
 

@@ -10,8 +10,8 @@ magnus = (43, 70, "Magnus", (100,500), (200, 600))
 tobias = (109, 168, "Tobias", (136,488), (186,660))
 roger = (223, 283, "Roger", (100,500), (200, 600))
 FP1 = (18, 99, "FP1",(100,500), (200, 600))
-FP2 = (105, 155, "FP2",(100,500), (200, 600))
-patients = [FP2]
+FP2 = (155, 187, "FP2",(100,500), (200, 600))
+patients = [FP2, roger, magnus]
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
@@ -20,9 +20,9 @@ def rgb2gray(rgb):
 def load_dicom_image(patient, imNbr):
     '''in:patient triple, in:imNbr int'''
     if patient == magnus or patient == FP1:
-        im_path = 'dataset/'+patient[2]+'/IM_00'+str(imNbr)
+        im_path = 'dataset/DICOM/'+patient[2]+'/IM_00'+str(imNbr)
     else:
-        im_path = 'dataset/'+patient[2]+'/IM_0'+str(imNbr)
+        im_path = 'dataset/DICOM/'+patient[2]+'/IM_0'+str(imNbr)
     ds = dicom.dcmread(im_path)
     rows = ds.Rows
     cols = ds.Columns
