@@ -15,15 +15,6 @@ patient = FP2
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
 
-
-# print(ds)
-
-# for i in range(nbrOfFrames):
-#     threeD[i][:][:] = rgb2gray(ds.pixel_array[i][:][:])
-
-
-# arg = input("Whole (w) or focused (f)?")
-
 for j in range(patient[0],patient[1]):
     if patient == FP2 and j == 154:
         continue
@@ -48,8 +39,4 @@ for j in range(patient[0],patient[1]):
         f_height = np.array(range(100,500))
         f_width = np.array(range(200,600))
         focused_im = im1[:][f_height[:, None],f_width]
-        # plt.imshow(focused_im)
-        print(focused_im.shape)
-        # plt.show()
-        # wait = input("Press enter to continue")
         cv2.imwrite(patient[2] + str(j) + "_c3.png",focused_im)
