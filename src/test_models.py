@@ -33,10 +33,10 @@ gpu = True
 if not gpu:
     print("Not using GPU, will take long time!")
 
-#print("Generate models !! Will take some time")
-#gen_test_models(gpu)
+print("Generate models !! Will take some time")
+gen_test_models(gpu)
 
-viz = True
+viz = False
 scale = [0.75]##, 1]
 out_thresh = [0.2]
 crf = True

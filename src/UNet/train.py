@@ -25,7 +25,7 @@ def train_net(net,
 
     dir_img = 'dataset/train/'
     dir_mask = 'dataset/train_masks/'
-    dir_checkpoint = 'checkpoints/model_sc' + str(img_scale) + "_lr" + str(lr) + "_batch" + str(batch_size) + "/"
+    dir_checkpoint = 'checkpoints/' + optimzer_opt + '_sc' + str(img_scale) + "_lr" + str(lr) + "_batch" + str(batch_size) + "/"
     if not os.path.exists(dir_checkpoint):
         os.makedirs(dir_checkpoint)
 
@@ -73,7 +73,7 @@ def train_net(net,
         val = get_imgs_and_masks(iddataset['val'], dir_img, dir_mask, img_scale)
 
         epoch_loss = 0
-        prev_loss = 1
+        val_dice = 1
 
         for i, b in enumerate(batch(train, batch_size)):
             imgs = np.array([i[0] for i in b]).astype(np.float32)
@@ -96,17 +96,14 @@ def train_net(net,
             epoch_loss += loss.item()
 
             print('{0:.4f} --- loss: {1:.6f}'.format(i * batch_size / N_train, loss.item()))
-            print('prev loss' + prev_loss)
-            prev_loss = epoch_loss
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-        prev_loss = 1
-
         print('Epoch finished ! Loss: {}'.format(epoch_loss / i))
 
         if 1:
+            print('prev loss ' + str(val_dice))
             val_dice = eval_net(net, val, gpu)
             print('Validation Dice Coeff: {}'.format(val_dice))
 

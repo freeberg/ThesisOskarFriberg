@@ -53,13 +53,14 @@ def guess_radius(img_path):
 
     # https://scikit-image.org/docs/dev/auto_examples/edges/plot_circular_elliptical_hough_transform.html
 def find_circle(img_path, viz=False):
-    print(img_path)
     # Load picture and detect edges
     img = cv2.imread(img_path,0)
     roi_x, roi_y = get_roi(img, 0.2)
     if (roi_x[0] == 0) and (roi_x[1] == 0):
         return 0, 0, 0
     image = img_as_ubyte(img[roi_x[0]:roi_x[1], roi_y[0]:roi_y[1]])
+    if image.size == 0:
+        return 0, 0, 0
     edges = canny(image, sigma=3, low_threshold=10, high_threshold=50)
 
     # Detect two radii
