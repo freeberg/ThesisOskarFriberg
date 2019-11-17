@@ -17,6 +17,8 @@ from evaluate_masks import evaluate_masks
 
 def latest_cp(ckpnts):
     cps = [f for f in os.listdir(ckpnts)]
+   # print(ckpnts)
+    cps.remove("itr_loss.txt")
     cps.sort()
     return cps[-1]
 
@@ -37,8 +39,8 @@ print("Generate models !! Will take some time")
 gen_test_models(gpu)
 
 viz = False
-scale = [0.75]##, 1]
-out_thresh = [0.2]
+scale = [0.75, 1]
+out_thresh = [0.2, 0.1]
 crf = True
 
 model_dir = "checkpoints/"
@@ -55,7 +57,6 @@ for sc in scale:
             curr_dir = out_dir + m
             cp = latest_cp(model_dir + m)
 
-
             curr_dir = curr_dir + "sc" + str(sc) + "_thresh" + str(thr) + "/"
             if not os.path.exists(curr_dir):
                 os.makedirs(curr_dir)
@@ -64,6 +65,7 @@ for sc in scale:
 
             if gpu:
                 print("Using CUDA version of the net, prepare your GPU !")
+                print(model_dir + m + cp)
                 net.cuda()
                 net.load_state_dict(torch.load(model_dir + m + cp))
             else:

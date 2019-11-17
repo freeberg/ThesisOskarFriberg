@@ -1,17 +1,20 @@
-import sys
 import os
+import sys
 from optparse import OptionParser
-import numpy as np
 
+import matplotlib.pyplot as plt
+import numpy as np
 import torch
 import torch.backends.cudnn as cudnn
 import torch.nn as nn
 from torch import optim
-import matplotlib.pyplot as plt
+
+from UNet.unet import UNet
+from UNet.utils import (batch, get_ids, get_imgs_and_masks, split_ids,
+                        split_train_val)
 
 from .eval import eval_net
-from UNet.unet import UNet
-from UNet.utils import get_ids, split_ids, split_train_val, get_imgs_and_masks, batch
+
 
 def train_net(net,
               epochs=5,
@@ -25,7 +28,7 @@ def train_net(net,
 
     dir_img = 'dataset/train/'
     dir_mask = 'dataset/train_masks/'
-    dir_checkpoint = 'checkpoints/' + optimzer_opt + '_sc' + str(img_scale) + "_lr" + str(lr) + "_batch" + str(batch_size) + "/"
+    dir_checkpoint = 'checkpoints/' + optimzer_opt + '_sc' + str(img_scale) + "_lr" + str(lr) + "_epochs" + str(epochs) + "/"
     if not os.path.exists(dir_checkpoint):
         os.makedirs(dir_checkpoint)
 
@@ -63,6 +66,8 @@ def train_net(net,
                           weight_decay=0.0005)
 
     criterion = nn.BCELoss()
+    val_dice = 0
+    iter_loss = []
 
     for epoch in range(epochs):
         print('Starting epoch {}/{}.'.format(epoch + 1, epochs))
@@ -73,7 +78,6 @@ def train_net(net,
         val = get_imgs_and_masks(iddataset['val'], dir_img, dir_mask, img_scale)
 
         epoch_loss = 0
-        val_dice = 1
 
         for i, b in enumerate(batch(train, batch_size)):
             imgs = np.array([i[0] for i in b]).astype(np.float32)
@@ -96,6 +100,7 @@ def train_net(net,
             epoch_loss += loss.item()
 
             print('{0:.4f} --- loss: {1:.6f}'.format(i * batch_size / N_train, loss.item()))
+            iter_loss.append(loss.item())
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
@@ -111,6 +116,11 @@ def train_net(net,
             torch.save(net.state_dict(),
                        dir_checkpoint + 'CP{}.pth'.format(epoch + 1))
             print('Checkpoint {} saved !'.format(epoch + 1))
+
+    list_file = open(dir_checkpoint + 'itr_loss.txt','w')
+    for loss in iter_loss:
+        list_file.write(str(loss) + '\n')
+    list_file.close()
 
 
 

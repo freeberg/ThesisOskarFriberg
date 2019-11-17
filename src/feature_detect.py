@@ -10,8 +10,8 @@ magnus = (43, 70, "Magnus", (100,500), (200, 600))
 tobias = (109, 168, "Tobias", (136,488), (186,660))
 roger = (223, 283, "Roger", (100,500), (200, 600))
 FP1 = (18, 99, "FP1",(100,500), (200, 600))
-FP2 = (105, 155, "FP2",(100,500), (200, 600))
-patients = [magnus, roger, FP1, FP2]
+FP2 = (144, 155, "FP2",(100,500), (200, 600))
+patients = [FP2]#magnus, roger, FP1, 
 
 def rgb2gray(rgb):
     return np.dot(rgb[...,:3], [0.2989, 0.5870, 0.1140])
@@ -50,8 +50,8 @@ for patient in patients:
     out_dir = "dataset/" + patient[2] + "_SRAD/"
     print("Producing SRAD for " + patient[2])
     for i in range(patient[1]-patient[0]):
-        if patient == FP2 and i == 154:
-            continue
+        #if patient == FP2 and i == 154:
+        #    continue
         image, rows, cols = load_dicom_image(patient, i + patient[0])
         cl1 = cv2.equalizeHist(image)
         cl2 = cv2.equalizeHist(image)

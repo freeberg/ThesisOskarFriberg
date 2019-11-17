@@ -17,7 +17,7 @@ with open("src/csvfiles/manuellSeg.csv", newline='') as csvfile:
 
 
 
-def evaluate_masks(input_dir, postproc=True, save_diff=True):
+def evaluate_masks(input_dir, postproc=False, save_diff=True):
 
     # använd manuellSeg.csv, ta ut en dict
     # THEN! Ta ut cirklar från input_masks (från input_path) 
@@ -90,7 +90,7 @@ def dice_coeff_imgs(i_mask, input_dir):
 
 def get_true_mask(i_mask):
     img_name = str(i_mask[0:-len("_seg.png")])
-    gtruth_path = "data/test_masks/" + img_name + "_mask.png"
+    gtruth_path = "dataset/test_masks/" + img_name + "_mask.png"
     true_mask = cv2.imread(gtruth_path, 0)
     return true_mask
     
